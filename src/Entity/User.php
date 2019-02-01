@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -14,12 +15,14 @@ class User
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @Groups("user")
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user")
      */
     private $firstname;
 
@@ -30,6 +33,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups("user")
      */
     private $email;
 
@@ -46,7 +50,7 @@ class User
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $adress;
+    private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -55,18 +59,29 @@ class User
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="users", orphanRemoval=true)
+     * @Groups("user")
      */
     private $cards;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Subscription", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @Groups("user")
      */
     private $subscription;
+
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    private $role = [];
 
     public function __construct()
     {
         $this->cards = new ArrayCollection();
+        $this->apiKey = md5(random_int(1,10000));
+        $this->role = ["ROLE_USER"];
+        $this->createdAt = \DateTime::createFromFormat('U',time(), new \DateTimeZone('CET'));
+
     }
 
     public function getId(): ?int
@@ -134,14 +149,14 @@ class User
         return $this;
     }
 
-    public function getAdress(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adress;
+        return $this->address;
     }
 
-    public function setAdress(?string $adress): self
+    public function setAddress(?string $address): self
     {
-        $this->adress = $adress;
+        $this->address = $address;
 
         return $this;
     }
@@ -197,6 +212,18 @@ class User
     public function setSubscription(?Subscription $subscription): self
     {
         $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    public function getRole(): ?array
+    {
+        return $this->role;
+    }
+
+    public function setRole(array $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }

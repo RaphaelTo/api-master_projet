@@ -5,9 +5,10 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\SubsciptionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SubscriptionRepository")
  */
 class Subscription
 {
@@ -15,26 +16,31 @@ class Subscription
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("sub")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("sub")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("sub")
      */
     private $slogan;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("sub")
      */
     private $url;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="subscription", orphanRemoval=true)
+     * @Groups("sub")
      */
     private $users;
 

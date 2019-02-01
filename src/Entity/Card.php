@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
  */
@@ -17,7 +17,8 @@ class Card
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255
+     * @Groups("user")
      */
     private $name;
 
@@ -27,9 +28,9 @@ class Card
     private $creditCardType;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
-    private $crediCardNumber;
+    private $creditCardNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,7 +46,7 @@ class Card
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $users;
+    private $user;
 
     public function getId(): ?int
     {
@@ -76,14 +77,14 @@ class Card
         return $this;
     }
 
-    public function getCrediCardNumber(): ?int
+    public function getCreditCardNumber(): ?int
     {
-        return $this->crediCardNumber;
+        return $this->creditCardNumber;
     }
 
-    public function setCrediCardNumber(int $crediCardNumber): self
+    public function setCreditCardNumber(int $creditCardNumber): self
     {
-        $this->crediCardNumber = $crediCardNumber;
+        $this->creditCardNumber = $creditCardNumber;
 
         return $this;
     }
@@ -112,14 +113,14 @@ class Card
         return $this;
     }
 
-    public function getUsers(): ?User
+    public function getUser(): ?User
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function setUsers(?User $users): self
+    public function setUser(?User $user): self
     {
-        $this->users = $users;
+        $this->user = $user;
 
         return $this;
     }
