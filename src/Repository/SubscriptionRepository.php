@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Subsciption;
+use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Subsciption|null find($id, $lockMode = null, $lockVersion = null)
- * @method Subsciption|null findOneBy(array $criteria, array $orderBy = null)
- * @method Subsciption[]    findAll()
- * @method Subsciption[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Subscription|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Subscription|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Subscription[]    findAll()
+ * @method Subscription[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SubsciptionRepository extends ServiceEntityRepository
+class SubscriptionRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Subsciption::class);
+        parent::__construct($registry, Subscription::class);
     }
 
     // /**
-    //  * @return Subsciption[] Returns an array of Subsciption objects
+    //  * @return Subscription[] Returns an array of Subscription objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class SubsciptionRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Subsciption
+    public function findOneBySomeField($value): ?Subscription
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

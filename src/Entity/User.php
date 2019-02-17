@@ -5,81 +5,88 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups("user")
      * @ORM\Column(type="integer")
+     * @Groups({"getUserMe"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user")
+     * @Groups({"getUserMe","user","updateUserMe"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"getUserMe","updateUserMe"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups("user")
+     * @Groups({"getUserMe","user"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"getUserMe"})
      */
     private $apiKey;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"getUserMe"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"getUserMe","updateUserMe"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"getUserMe","updateUserMe"})
      */
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="users", orphanRemoval=true)
-     * @Groups("user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user", orphanRemoval=true)
+     * @Groups({"getUserMe","user","updateUserMe"})
      */
     private $cards;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Subscription", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Subscription", inversedBy="user")
      * @ORM\JoinColumn(nullable=true)
-     * @Groups("user")
+     * @Groups({"getUserMe","user","updateUserMe"})
      */
     private $subscription;
 
     /**
      * @ORM\Column(type="simple_array")
+     * @Groups({"getUserMe"})
      */
-    private $role = [];
+    private $roles = [];
 
     public function __construct()
     {
         $this->cards = new ArrayCollection();
         $this->apiKey = md5(random_int(1,10000));
-        $this->role = ["ROLE_USER"];
+        $this->roles = ["ROLE_USER"];
         $this->createdAt = \DateTime::createFromFormat('U',time(), new \DateTimeZone('CET'));
 
     }
@@ -185,7 +192,7 @@ class User
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
-            $card->setUsers($this);
+            $card->setuser($this);
         }
 
         return $this;
@@ -196,8 +203,8 @@ class User
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
             // set the owning side to null (unless already changed)
-            if ($card->getUsers() === $this) {
-                $card->setUsers(null);
+            if ($card->getuser() === $this) {
+                $card->setuser(null);
             }
         }
 
@@ -216,16 +223,61 @@ class User
         return $this;
     }
 
-    public function getRole(): ?array
+    public function getRoles(): ?array
     {
-        return $this->role;
+        return $this->roles;
     }
 
-    public function setRole(array $role): self
+    public function setRoles(array $roles): self
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
 
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string The password
+     */
+    public function getPassword()
+    {
+        // TODO: Implement getPassword() method.
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }

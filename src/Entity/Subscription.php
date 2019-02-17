@@ -16,31 +16,30 @@ class Subscription
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("sub")
+     * @Groups({"sub","user","getUserMe","updateUserMe"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("sub")
+     * @Groups({"sub","user","getUserMe","updateUserMe"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("sub")
+     * @Groups({"sub","user","getUserMe","updateUserMe"})
      */
     private $slogan;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("sub")
+     * @Groups({"sub","user","getUserMe","updateUserMe"})
      */
     private $url;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="subscription", orphanRemoval=true)
-     * @Groups("sub")
      */
     private $users;
 

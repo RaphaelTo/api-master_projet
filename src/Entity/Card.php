@@ -13,32 +13,37 @@ class Card
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"getUserMe"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255
-     * @Groups("user")
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user","getUserMe","updateUserMe"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"getUserMe","updateUserMe"})
      */
     private $creditCardType;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"getUserMe","updateUserMe"})
      */
     private $creditCardNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"getUserMe", "updateUserMe"})
      */
     private $currencyCode;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"getUserMe", "updateUserMe"})
      */
     private $value;
 
